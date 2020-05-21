@@ -72,9 +72,8 @@
         e.preventDefault();
         isDrawing = true;
     });
-    canvas.addEventListener('touchmove', (e) => {
+    canvas.addEventListener('touchmove', (e, draw) => {
         e.preventDefault();
-        draw();
     });
     canvas.addEventListener('touchend', (e) => {
         e.preventDefault();
