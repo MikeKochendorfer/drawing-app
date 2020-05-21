@@ -70,11 +70,8 @@
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        if(!isDrawing) {
-            isDrawing = true;
-        } else {
-            isDrawing = false;
-        }
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
     });
     canvas.addEventListener('touchmove', (e, draw) => {
         e.preventDefault();
