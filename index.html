@@ -37,10 +37,10 @@
 
         hue++;
         if (hue >= 360) {
-        hue = 0;
+            hue = 0;
         }
         if (context.lineWidth >= 100 || context.lineWidth <= 1) {
-         direction = !direction;
+            direction = !direction;
         }
 
         if(direction) {
@@ -70,7 +70,11 @@
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        isDrawing = true;
+        if(!isDrawing) {
+            isDrawing = true;
+        } else {
+            isDrawing = false;
+        }
     });
     canvas.addEventListener('touchmove', (e, draw) => {
         e.preventDefault();
