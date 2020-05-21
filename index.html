@@ -58,8 +58,6 @@
     }
 
     canvas.addEventListener('click', (e) => {
-        console.log(e);
-        console.log(isDrawing);
         if (!isDrawing) {
             isDrawing = true;
         } else {
@@ -71,21 +69,6 @@
     //canvas.addEventListener('mouseup', () => isDrawing = false);
     //canvas.addEventListener('mouseout', () => isDrawing = false);
 
-    canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        console.log('hey you touched me')
-        isDrawing = true;
-        [lastX, lastY] = [e.offsetX, e.offsetY];
-        
-        canvas.addEventListener('touchmove', (e, draw) => {
-            e.preventDefault();
-        });
-        canvas.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            isDrawing = false;
-        });
-    });
-    
 </script>
 
 <style>
