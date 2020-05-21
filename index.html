@@ -68,9 +68,18 @@
         [lastX, lastY] = [e.offsetX, e.offsetY];
     });
     canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('touchstart', () => isDrawing = true);
-    canvas.addEventListener('touchmove', draw);
-    canvas.addEventListener('touchend', () => isDrawing = false);
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        isDrawing = true;
+    });
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        draw;
+    });
+    canvas.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        isDrawing = false;
+    });
     //canvas.addEventListener('mouseup', () => isDrawing = false);
     //canvas.addEventListener('mouseout', () => isDrawing = false);
 </script>
