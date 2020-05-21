@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
+  <title>Drawing App</title>
 </head>
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
@@ -68,20 +68,24 @@
         [lastX, lastY] = [e.offsetX, e.offsetY];
     });
     canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        isDrawing = true;
-        [lastX, lastY] = [e.offsetX, e.offsetY];
-    });
-    canvas.addEventListener('touchmove', (e, draw) => {
-        e.preventDefault();
-    });
-    canvas.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        isDrawing = false;
-    });
     //canvas.addEventListener('mouseup', () => isDrawing = false);
     //canvas.addEventListener('mouseout', () => isDrawing = false);
+
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        console.log('hey you touched me')
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+        
+        canvas.addEventListener('touchmove', (e, draw) => {
+            e.preventDefault();
+        });
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            isDrawing = false;
+        });
+    });
+    
 </script>
 
 <style>
