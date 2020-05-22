@@ -5,10 +5,14 @@
   <title>Drawing App</title>
 </head>
 <body>
-<canvas id="draw" width="800" height="800"></canvas>
+    <div>
+        <button id="download">Download Image</button>
+    </div>
+    <canvas id="draw" width="800" height="800"></canvas>
 <script>
     const canvas = document.querySelector('#draw');
     const context = canvas.getContext('2d');
+    const download = document.querySelector('#download').addEventListener('click', saveImage);
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -74,6 +78,20 @@
 <style>
     html, body {
         margin: 0;
+        position: relative;
+    }
+
+    #download {
+        opacity: 60%;
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        height: 50px;
+        width: 150px;
+        border-radius: 30px;
+        border: 1px solid black;
+        color: black;
+        font-weight: bold;
     }
 </style>
 
