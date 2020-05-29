@@ -8,15 +8,22 @@
     <div>
         <button id="download">Download Image</button>
     </div>
+    <div id="menu">
+        <button id="plus" class="change-size">+</button>
+        <button id="minus" class="change-size">-</button>
+    </div>
     <canvas id="draw" width="800" height="800"></canvas>
 <script>
     const canvas = document.querySelector('#draw');
     const context = canvas.getContext('2d');
     const download = document.querySelector('#download').addEventListener('click', saveImage);
+    const sizes = document.querySelectorAll('.change-size');
+    const plusButton = document.querySelector('#plus');
+    const minusButton = document.querySelector('#minus');
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    //context.strokeStyle = '#BADA55';
     context.lineJoin = 'round';
     context.lineCap = 'round';
     context.lineWidth = 100;
@@ -31,7 +38,6 @@
 
     function draw(e) {
         if (!isDrawing) return; 
-        console.log(e);
         context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
         context.beginPath();
         context.moveTo(lastX, lastY);
@@ -43,6 +49,20 @@
         if (hue >= 360) {
             hue = 0;
         }
+
+        
+        /*if (context.lineWidth >= 100 || context.lineWidth <= 1) {
+            direction = !direction;
+        }
+
+        if(direction) {
+            context.lineWidth++;
+        } else {
+         context.lineWidth--;
+        }*/
+    }
+
+    function alternateLineWidth(){
         if (context.lineWidth >= 100 || context.lineWidth <= 1) {
             direction = !direction;
         }
@@ -70,6 +90,15 @@
         [lastX, lastY] = [e.offsetX, e.offsetY];
     });
     canvas.addEventListener('mousemove', draw);
+    sizes.forEach(button => button.addEventListener('click', (e) => {
+        if (e.target.id === 'minus'){
+            context.lineWidth = context.lineWidth - 10;
+            console.log(context.lineWidth);
+        } else {
+            context.lineWidth = context.lineWidth + 10;
+            console.log(context.lineWidth);
+        };
+    }));
     //canvas.addEventListener('mouseup', () => isDrawing = false);
     //canvas.addEventListener('mouseout', () => isDrawing = false);
 
@@ -95,6 +124,35 @@
     }
 
     #download:focus {
+        outline: none;
+    }
+
+    #plus {
+        opacity: 60%;
+        position: absolute;
+        bottom: 85px;
+        right: 30px;
+        height: 50px;
+        width: 70px;
+        border: 1px solid black;
+        border-radius: 40px;
+        color: black;
+        font-weight: bold
+    }
+    #minus {
+        opacity: 60%;
+        position: absolute;
+        bottom: 85px;
+        right: 110px;
+        height: 50px;
+        width: 70px;
+        border: 1px solid black;
+        border-radius: 40px;
+        color: black;
+        font-weight: bold
+    }
+
+    #plus:focus,#minus:focus {
         outline: none;
     }
 </style>
