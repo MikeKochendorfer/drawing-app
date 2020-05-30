@@ -9,6 +9,7 @@
         <button id="download">Download Image</button>
     </div>
     <div id="menu">
+        <button id="speech">Speech Recognition</button>
         <button id="plus" class="change-size">+</button>
         <button id="minus" class="change-size">-</button>
     </div>
@@ -20,6 +21,7 @@
     const sizes = document.querySelectorAll('.change-size');
     const plusButton = document.querySelector('#plus');
     const minusButton = document.querySelector('#minus');
+    const speechButton = document.querySelector('#speech');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -27,39 +29,37 @@
     context.lineJoin = 'round';
     context.lineCap = 'round';
     context.lineWidth = 100;
-  
+
 
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
-    let hue = 0;
+    let hue = 100;
     let direction = true;
+    let spokenColor;
+    let listening = false;
   
 
     function draw(e) {
         if (!isDrawing) return; 
-        context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        if(!listening) {
+            context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        } else {
+            context.strokeStyle = `${spokenColor}`;
+        }
         context.beginPath();
         context.moveTo(lastX, lastY);
         context.lineTo(e.offsetX, e.offsetY);
         context.stroke();
         [lastX, lastY] = [e.offsetX, e.offsetY];
+        toggleRainbow();
+    }
 
+    function toggleRainbow() {
         hue++;
         if (hue >= 360) {
             hue = 0;
         }
-
-        
-        /*if (context.lineWidth >= 100 || context.lineWidth <= 1) {
-            direction = !direction;
-        }
-
-        if(direction) {
-            context.lineWidth++;
-        } else {
-         context.lineWidth--;
-        }*/
     }
 
     function alternateLineWidth(){
@@ -67,11 +67,46 @@
             direction = !direction;
         }
 
-        if(direction) {
+        if (direction) {
             context.lineWidth++;
         } else {
          context.lineWidth--;
         }
+    }
+
+    function speechRecognition() {
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.interimResults = true;
+
+        //let p = document.createElement('p');
+        //const words = document.querySelector('.words');
+        //words.appendChild(p);
+
+        recognition.addEventListener('result', (e) => {
+            if(!listening) return;
+            const transcript = Array.from(e.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join()
+
+            //p.textContent = transcript;
+            if (e.results[0].isFinal) {
+                //p = document.createElement('p');
+                //words.appendChild(p);
+                spokenColor = transcript;
+                console.log(spokenColor);
+            }
+        });
+
+        recognition.start();
+
+        recognition.addEventListener('end', () => {
+            if(listening === false) {
+                return;
+            } else {
+                recognition.start();
+            }});
     }
 
     function saveImage() {
@@ -99,6 +134,18 @@
             console.log(context.lineWidth);
         };
     }));
+    speech.addEventListener('click', () => {
+        if (!listening) {
+            listening = true;
+            speechRecognition();
+            speechButton.classList.add('on');
+            console.log(listening);
+        } else {
+            listening = false;
+            speechButton.classList.remove('on');
+            console.log(listening);
+        }
+    });
     //canvas.addEventListener('mouseup', () => isDrawing = false);
     //canvas.addEventListener('mouseout', () => isDrawing = false);
 
@@ -152,8 +199,25 @@
         font-weight: bold
     }
 
-    #plus:focus,#minus:focus {
+    #plus:focus,#minus:focus,#speech:focus {
         outline: none;
+    }
+
+    #speech {
+        opacity: 60%;
+        position: absolute;
+        bottom: 140px;
+        right: 30px;
+        height: 50px;
+        width: 150px;
+        border-radius: 30px;
+        border: 1px solid black;
+        color: black;
+        font-weight: bold;
+    }
+
+    .on {
+        background-color: chartreuse;
     }
 </style>
 
