@@ -6,12 +6,12 @@
 </head>
 <body>
     <div>
-        <button id="download">Download Image</button>
+        <button id="download" class="menu-item">Download Image</button>
     </div>
     <div id="menu">
-        <button id="speech">Speech Recognition</button>
-        <button id="plus" class="change-size">+</button>
-        <button id="minus" class="change-size">-</button>
+        <button id="speech" class="menu-item">Speech Recognition</button>
+        <button id="plus" class="change-size menu-item">+</button>
+        <button id="minus" class="change-size menu-item">-</button>
     </div>
     <canvas id="draw" width="800" height="800"></canvas>
 <script>
@@ -19,8 +19,6 @@
     const context = canvas.getContext('2d');
     const download = document.querySelector('#download').addEventListener('click', saveImage);
     const sizes = document.querySelectorAll('.change-size');
-    const plusButton = document.querySelector('#plus');
-    const minusButton = document.querySelector('#minus');
     const speechButton = document.querySelector('#speech');
 
     canvas.width = window.innerWidth;
@@ -30,7 +28,6 @@
     context.lineCap = 'round';
     context.lineWidth = 100;
 
-
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
@@ -38,7 +35,6 @@
     let direction = true;
     let spokenColor;
     let listening = false;
-  
 
     function draw(e) {
         if (!isDrawing) return; 
@@ -79,10 +75,6 @@
         const recognition = new SpeechRecognition();
         recognition.interimResults = true;
 
-        //let p = document.createElement('p');
-        //const words = document.querySelector('.words');
-        //words.appendChild(p);
-
         recognition.addEventListener('result', (e) => {
             if(!listening) return;
             const transcript = Array.from(e.results)
@@ -90,12 +82,8 @@
             .map(result => result.transcript)
             .join()
 
-            //p.textContent = transcript;
             if (e.results[0].isFinal) {
-                //p = document.createElement('p');
-                //words.appendChild(p);
                 spokenColor = transcript;
-                console.log(spokenColor);
             }
         });
 
@@ -106,7 +94,8 @@
                 return;
             } else {
                 recognition.start();
-            }});
+            }
+        });
     }
 
     function saveImage() {
@@ -146,9 +135,6 @@
             console.log(listening);
         }
     });
-    //canvas.addEventListener('mouseup', () => isDrawing = false);
-    //canvas.addEventListener('mouseout', () => isDrawing = false);
-
 </script>
 
 <style>
@@ -157,17 +143,20 @@
         position: relative;
     }
 
-    #download {
+    .menu-item {
         opacity: 60%;
         position: absolute;
+        border: 1px solid black;
+        color: black;
+        font-weight: bold;
+    }
+
+    #download {
         bottom: 30px;
         right: 30px;
         height: 50px;
         width: 150px;
         border-radius: 30px;
-        border: 1px solid black;
-        color: black;
-        font-weight: bold;
     }
 
     #download:focus {
@@ -175,28 +164,18 @@
     }
 
     #plus {
-        opacity: 60%;
-        position: absolute;
         bottom: 85px;
         right: 30px;
-        height: 50px;
-        width: 70px;
-        border: 1px solid black;
-        border-radius: 40px;
-        color: black;
-        font-weight: bold
     }
     #minus {
-        opacity: 60%;
-        position: absolute;
         bottom: 85px;
         right: 110px;
+    }
+
+    .change-size {
         height: 50px;
         width: 70px;
-        border: 1px solid black;
         border-radius: 40px;
-        color: black;
-        font-weight: bold
     }
 
     #plus:focus,#minus:focus,#speech:focus {
@@ -204,16 +183,11 @@
     }
 
     #speech {
-        opacity: 60%;
-        position: absolute;
         bottom: 140px;
         right: 30px;
         height: 50px;
         width: 150px;
         border-radius: 30px;
-        border: 1px solid black;
-        color: black;
-        font-weight: bold;
     }
 
     .on {
